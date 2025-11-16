@@ -18,7 +18,7 @@ jobs:
         dotnet-version: "9.0"
 
     - name: Publish .NET API
-      working-directory: ./dotnet-api
+      working-directory: ./netapiapp
       run: |
         dotnet publish -c Release -o published
         cd published
