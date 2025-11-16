@@ -15,7 +15,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: "10.x"
+        dotnet-version: "9.0"
 
     - name: Publish .NET API
       working-directory: ./dotnet-api
@@ -31,6 +31,9 @@ jobs:
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.6.0
+
 
     - name: Terraform Init
       working-directory: ./terraform/env/dev
