@@ -18,11 +18,12 @@ jobs:
         dotnet-version: "9.0"
 
     - name: Publish .NET API
-      working-directory: ./netapiapp
       run: |
-        dotnet publish -c Release -o published
-        cd published
+        PROJECT=$(find ./netapiapp -name "*.csproj")
+        dotnet publish $PROJECT -c Release -o ./netapiapp/published
+        cd ./netapiapp/published
         zip -r ../published.zip .
+
 
     - name: Azure Login
       uses: azure/login@v1
