@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "ZOGk6awMlU4=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\svbho\\OneDrive\\Desktop\\tf.net\\netapiapp\\netapiapp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\svbho\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.8\\microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
+    "C:\\Users\\svbho\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}

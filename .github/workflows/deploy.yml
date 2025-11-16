@@ -1,0 +1,45 @@
+name: Build & Deploy .NET + Terraform
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: "10.x"
+
+    - name: Publish .NET API
+      working-directory: ./dotnet-api
+      run: |
+        dotnet publish -c Release -o published
+        cd published
+        zip -r ../published.zip .
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Terraform Init
+      working-directory: ./terraform/env/dev
+      run: terraform init
+
+    - name: Terraform Plan
+      working-directory: ./terraform/env/dev
+      run: terraform plan
+
+    - name: Terraform Apply
+      working-directory: ./terraform/env/dev
+      run: terraform apply -auto-approve
