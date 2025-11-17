@@ -27,21 +27,21 @@ module "container_app" {
   location        = var.location
   app_name        = var.app_name
   tags            = local.tags
-  container_image = var.container_image
+  container_image = var.container_image  # e.g. myacr.azurecr.io/app:1.0.5
 }
 
 # (OPTIONAL) — Only needed if you want to update Container App image via CLI
 resource "null_resource" "update_image" {
   depends_on = [module.container_app]
 
-  provisioner "local-exec" {
-    command = <<-EOT
-      az containerapp update \
-        --name ${var.app_name} \
-        --resource-group ${module.rg.name} \
-        --image ${var.container_image}
-    EOT
-  }
+  #provisioner "local-exec" {
+  #  command = <<-EOT
+  #    az containerapp update \
+  #      --name ${var.app_name} \
+  #      --resource-group ${module.rg.name} \
+  #      --image ${var.container_image}
+  #  EOT
+  #}
 }
 
 output "app_name" {
