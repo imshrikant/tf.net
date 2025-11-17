@@ -1,3 +1,10 @@
+resource "azurerm_container_app_environment" "env" {
+  name                = "${var.app_name}-env"
+  location            = var.location
+  resource_group_name = var.rg_name
+  tags                = var.tags
+}
+
 resource "azurerm_container_app" "app" {
   name                = var.app_name
   resource_group_name = var.rg_name
