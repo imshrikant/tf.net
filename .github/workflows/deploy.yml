@@ -63,8 +63,10 @@ jobs:
           echo "EOF"
         } >> "$GITHUB_OUTPUT"
 
-    - name: Deploy WebApp ZIP
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ steps.tf-output.outputs.webapp }}
-        package: "./netapiapp/published.zip"
+    - name: Deploy Container App
+      run: |
+        az containerapp update \
+          --name "${{ steps.tf.outputs.app_name }}" \
+          --resource-group "hello-api-dev-rg" \
+          --image "mcr.microsoft.com/dotnet/samples:aspnetapp"
+
