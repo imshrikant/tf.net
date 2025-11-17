@@ -63,10 +63,10 @@ jobs:
           echo "EOF"
         } >> "$GITHUB_OUTPUT"
 
-    - name: Deploy Container App
-      run: |
-        az containerapp update \
-          --name "${{ steps.tf.outputs.app_name }}" \
-          --resource-group "hello-api-dev-rg" \
-          --image "mcr.microsoft.com/dotnet/samples:aspnetapp"
+    # - name: Deploy Container App
+    #   run: |
+    #     az containerapp update \
+    #       --name "${{ steps.tf.outputs.app_name }}" \
+    #       --resource-group "hello-api-dev-rg" \
+    #       --image "mcr.microsoft.com/dotnet/samples:aspnetapp"
 
