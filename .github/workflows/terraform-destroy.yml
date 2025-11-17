@@ -1,7 +1,11 @@
 name: Terraform Destroy
 
 on:
-  workflow_dispatch:   # Manually triggered workflow
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type YES to confirm destroy"
+        required: true
 
 jobs:
   destroy:
@@ -11,26 +15,25 @@ jobs:
       id-token: write
       contents: read
 
+    if: ${{ github.event.inputs.confirm == 'YES' }}
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Azure Login with OIDC
-      uses: azure/login@v2
-      with:
-        client-id: ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}
-        tenant-id: ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
-        subscription-id: ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
-        enable-AzPSSession: false
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
 
-    - name: Terraform Init
-      run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
-    - name: Terraform Plan Destroy
-      run: terraform plan -destroy -out=tfplan
+      - name: Terraform Plan Destroy
+        run: terraform plan -destroy -out=tfplan
 
-    - name: Terraform Apply Destroy
-      run: terraform apply -auto-approve tfplan
+      - name: Terraform Apply Destroy
+        run: terraform apply -auto-approve tfplan
