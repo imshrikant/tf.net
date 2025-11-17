@@ -32,6 +32,9 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Terraform State List
+        run: terraform state list || echo "State is empty"
+
       - name: Terraform Plan Destroy
         run: terraform plan -destroy -out=tfplan
 
