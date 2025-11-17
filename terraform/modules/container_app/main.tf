@@ -10,7 +10,6 @@ resource "azurerm_container_app" "app" {
   name                         = var.app_name
   container_app_environment_id = azurerm_container_app_environment.env.id
   resource_group_name          = var.rg_name
-  location                     = var.location
 
   revision_mode = "Single"
 
