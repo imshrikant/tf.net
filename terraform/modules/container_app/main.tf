@@ -2,16 +2,14 @@ resource "azurerm_container_app_environment" "env" {
   name                = "${var.app_name}-env"
   resource_group_name = var.rg_name
   location            = var.location
-
-  tags = var.tags
+  tags                = var.tags
 }
 
 resource "azurerm_container_app" "app" {
   name                         = var.app_name
   container_app_environment_id = azurerm_container_app_environment.env.id
   resource_group_name          = var.rg_name
-
-  revision_mode = "Single"
+  revision_mode                = "Single"
 
   ingress {
     external_enabled = true

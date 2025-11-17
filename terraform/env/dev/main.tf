@@ -22,23 +22,24 @@ module "storage" {
 }
 
 module "container_app" {
-  source   = "../../modules/container_app"
-  rg_name  = module.rg.name
-  location = var.location
-  app_name = var.app_name
-  tags     = local.tags
+  source          = "../../modules/container_app"
+  rg_name         = module.rg.name
+  location        = var.location
+  app_name        = var.app_name
+  tags            = local.tags
   container_image = var.container_image
 }
 
-resource "null_resource" "deploy_api" {
+# (OPTIONAL) — Only needed if you want to update Container App image via CLI
+resource "null_resource" "update_image" {
   depends_on = [module.container_app]
 
   provisioner "local-exec" {
-    command = <<EOT
-      az webapp deployment source config-zip \
-      --resource-group ${module.rg.name} \
-      --name ${var.app_name} \
-      --src ../../../dotnet-api/published.zip
+    command = <<-EOT
+      az containerapp update \
+        --name ${var.app_name} \
+        --resource-group ${module.rg.name} \
+        --image ${var.container_image}
     EOT
   }
 }
@@ -46,4 +47,3 @@ resource "null_resource" "deploy_api" {
 output "app_url" {
   value = module.container_app.url
 }
-
