@@ -1,0 +1,36 @@
+name: Terraform Destroy
+
+on:
+  workflow_dispatch:   # Manually triggered workflow
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Azure Login with OIDC
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        enable-AzPSSession: false
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Plan Destroy
+      run: terraform plan -destroy -out=tfplan
+
+    - name: Terraform Apply Destroy
+      run: terraform apply -auto-approve tfplan
