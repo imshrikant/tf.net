@@ -29,8 +29,17 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
+      - name: Create backend config file from secret
+        run: |
+          echo "resource_group_name=\"$(echo '${{ secrets.TF_BACKEND_CONFIG }}' | grep TF_RG | awk -F= '{print $2}' | xargs)\"" > backend.auto.tfvars
+          echo "storage_account_name=\"$(echo '${{ secrets.TF_BACKEND_CONFIG }}' | grep TF_STORAGE | awk -F= '{print $2}' | xargs)\"" >> backend.auto.tfvars
+          echo "container_name=\"$(echo '${{ secrets.TF_BACKEND_CONFIG }}' | grep TF_CONTAINER | awk -F= '{print $2}' | xargs)\"" >> backend.auto.tfvars
+          echo "key=\"$(echo '${{ secrets.TF_BACKEND_CONFIG }}' | grep TF_STATE_KEY | awk -F= '{print $2}' | xargs)\"" >> backend.auto.tfvars
+
       - name: Terraform Init
-        run: terraform init
+        run: |
+          terraform init \
+            -backend-config="backend.auto.tfvars"
 
       - name: Terraform State List
         run: terraform state list || echo "State is empty"
