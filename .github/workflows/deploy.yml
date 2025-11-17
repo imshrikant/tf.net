@@ -53,17 +53,15 @@ jobs:
       working-directory: ./terraform/env/dev
       run: terraform apply -auto-approve
 
-    - name: Get Terraform Output (WebApp Name)
-      id: tf-output
-      working-directory: ./terraform/env/dev
+    - name: Get Container App Name
+      id: tfout
       run: |
-        APP_URL=$(terraform output -raw app_url)
+        APP=$(terraform output -raw app_name)
         {
-          echo "app_url<<EOF"
-          echo "$APP_URL"
+          echo "app_name<<EOF"
+          echo "$APP"
           echo "EOF"
         } >> "$GITHUB_OUTPUT"
-
 
     - name: Deploy WebApp ZIP
       uses: azure/webapps-deploy@v2

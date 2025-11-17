@@ -44,6 +44,6 @@ resource "null_resource" "update_image" {
   }
 }
 
-output "app_url" {
-  value = module.container_app.url
+output "app_name" {
+  value = module.container_app.app_name
 }
