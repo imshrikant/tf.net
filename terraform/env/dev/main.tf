@@ -26,7 +26,6 @@ module "container_app" {
   rg_name  = module.rg.name
   location = var.location
   app_name = var.app_name
-  env_id       = azurerm_container_app_environment.main.id 
   tags     = local.tags
   container_image = var.container_image
 }

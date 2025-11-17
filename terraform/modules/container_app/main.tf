@@ -8,7 +8,7 @@ resource "azurerm_container_app_environment" "env" {
 
 resource "azurerm_container_app" "app" {
   name                         = var.app_name
-  container_app_environment_id = var.env_id
+  container_app_environment_id = azurerm_container_app_environment.env.id
   resource_group_name          = var.rg_name
 
   revision_mode = "Single"
