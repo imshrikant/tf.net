@@ -58,7 +58,12 @@ jobs:
       working-directory: ./terraform/env/dev
       run: |
         APP_URL=$(terraform output -raw app_url)
-        echo "app_url=$APP_URL" >> $GITHUB_OUTPUT
+        {
+          echo "app_url<<EOF"
+          echo "$APP_URL"
+          echo "EOF"
+        } >> "$GITHUB_OUTPUT"
+
 
     - name: Deploy WebApp ZIP
       uses: azure/webapps-deploy@v2
