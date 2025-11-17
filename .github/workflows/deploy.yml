@@ -43,7 +43,7 @@ jobs:
 
     - name: Terraform Init
       working-directory: ./terraform/env/dev
-      run: terraform init
+      run: terraform init -upgrade
 
     - name: Terraform Plan
       working-directory: ./terraform/env/dev
