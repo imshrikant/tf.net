@@ -21,16 +21,17 @@ module "storage" {
   tags     = local.tags
 }
 
-module "app_service" {
-  source   = "../../modules/app_service"
-  name     = var.app_name
-  location = var.location
+module "container_app" {
+  source   = "../../modules/container_app"
   rg_name  = module.rg.name
+  location = var.location
+  app_name = var.app_name
   tags     = local.tags
+  container_image = var.container_image
 }
 
 resource "null_resource" "deploy_api" {
-  depends_on = [module.app_service]
+  depends_on = [module.container_app]
 
   provisioner "local-exec" {
     command = <<EOT
@@ -43,5 +44,6 @@ resource "null_resource" "deploy_api" {
 }
 
 output "app_url" {
-  value = "https://${module.app_service.url}"
+  value = module.container_app.url
 }
+
